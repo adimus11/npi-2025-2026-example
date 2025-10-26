@@ -3,11 +3,13 @@ FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Copy everything including vendor directory
+# Copy everything including vendored dependencies
 COPY . .
 
-# Build the application using vendored dependencies
-RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -a -installsuffix cgo -o notes-server .
+# Build using vendored dependencies
+# Note: vendor directory is committed to repository to enable builds in
+# environments with restricted network access or TLS certificate issues
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o notes-server .
 
 # Final stage
 FROM alpine:latest
