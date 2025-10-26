@@ -132,6 +132,30 @@ docker run -p 8080:8080 -e STORAGE_BACKEND=redis -e REDIS_ADDR=host.docker.inter
 docker run -p 8080:8080 -e STORAGE_BACKEND=postgres -e POSTGRES_CONN="host=host.docker.internal port=5432 user=postgres password=postgres dbname=notes sslmode=disable" notes-server
 ```
 
+## Running with Docker Compose
+
+The repository includes a `docker-compose.yml` file that sets up all three storage backends with their dependencies.
+
+```bash
+# Start all services
+docker compose up
+
+# Or start specific services
+docker compose up notes-ephemeral  # Ephemeral storage on port 8080
+docker compose up notes-redis      # Redis storage on port 8081
+docker compose up notes-postgres   # Postgres storage on port 8082
+
+# Stop all services
+docker compose down
+```
+
+The compose file creates three instances:
+- `notes-ephemeral` - Notes server with ephemeral storage (port 8080)
+- `notes-redis` - Notes server with Redis storage (port 8081)
+- `notes-postgres` - Notes server with Postgres storage (port 8082)
+- `redis` - Redis service
+- `postgres` - PostgreSQL service
+
 ## Testing
 
 Run the tests:
